@@ -47,6 +47,7 @@ function playGame(n) {
 }
   
 function promptUser(){
+    let request = prompt("please open console to see game, u can do that by right clicking on anywhere in page, then go to console");
     let nTimes = prompt("how many times u want to play game of rock-paper-scissors");
     return playGame(nTimes);
 }
