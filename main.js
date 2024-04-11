@@ -1,54 +1,61 @@
-let won = 0;
-let loose = 0;
+let playerScore = 0;
+let computerScore = 0;
 let tie = 0;
+let roundsPlayed = 0;
+
+const result = document.querySelector('#results');
+const dual = document.querySelector('#bothOptions');
+const oneResults = document.querySelector('#oneResult');
 
 function getComputerChoice() {
-    let ray = ["rock", "paper", "scissors"];
-    let x = Math.floor((Math.random() * 3) + 0);
-    let computerChoice = ray[x];
-    console.log(`Computer choose ${computerChoice}`);
-    return computerChoice;
-}
-
-function getUserChoice() {
-    let userChoice = prompt("choose from rock,paper and scissors");
-    let userLowerChoice = userChoice.toLowerCase();
-    console.log(`You choose ${userLowerChoice}`);
-    return userLowerChoice;
+    let randomNumber = Math.floor((Math.random() * 3) + 0);
+    switch(randomNumber) {
+        case 0: return "rock";
+        case 1: return "paper";
+        case 2: return "scissors";
+    }
 }
 
 function playRound(playerSelection, computerSelection) {
-
-    if(playerSelection === "rock" && computerSelection === "scissors" || playerSelection === "paper" && computerSelection === "rock" || playerSelection === "scissors" && computerSelection === "paper"){
-        won += 1;
-        return console.log(`You Won! ${playerSelection} beats ${computerSelection}`);
-
-    } else if(playerSelection === "rock" && computerSelection === "paper" || playerSelection === "paper" && computerSelection === "scissors" ||
-    playerSelection === "scissors" && computerSelection === "rock") {
-        loose += 1;
-        return console.log(`You Loose! ${computerSelection} beats ${playerSelection}`);
-
-    }else {
+    dual.textContent = `you choose ${playerSelection} and computer choose ${computerSelection}`;
+    if (playerSelection === computerSelection) {
         tie += 1;
-        return console.log(`${playerSelection} vs ${computerSelection} is a tie game`);
+        oneResults.textContent = `${playerSelection} vs ${computerSelection} is a tie game`;
+    } else if (
+        (playerSelection === "rock" && computerSelection === "scissors") ||
+        (playerSelection === "paper" && computerSelection === "rock") ||
+        (playerSelection === "scissors" && computerSelection === "paper")
+    ) {
+        playerScore += 1;
+        oneResults.textContent = `You Won! ${playerSelection} beats ${computerSelection}`;
+    } else {
+        computerScore += 1;
+        oneResults.textContent =  `You Lost! ${computerSelection} beats ${playerSelection}`;
     }
 }
 
 function finalResult(){
-    return console.log(`You won ${won} times, you loose ${loose} times, and total tie games are ${tie}`);
+    alert("ready for final result");
+    result.textContent = (`You won ${playerScore} times, you loose ${computerScore} times, and total tie games are ${tie}`);
 }
 
+function playGame() {
 
-function playGame(n) {
-    for(let i = 0; i < n; i+=1){
-        playRound(getUserChoice(), getComputerChoice());
-    }
-    finalResult();
+    const choiceButtons = document.querySelectorAll('button');
+    choiceButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            result.textContent = `you choose ${button.textContent}`;
+            playRound(button.textContent,getComputerChoice());
+            if(playerScore === 5 || computerScore === 5) {
+                finalResult();
+                playerScore = 0;
+                computerScore = 0;
+                roundsPlayed = 0;
+            } else {
+                result.textContent = `Player: ${playerScore} Computer: ${computerScore}`;
+            }
+        })
+
+    });
 }
-  
-function promptUser(){
-    let request = prompt("please open console to see game, u can do that by right clicking on anywhere in page, and then click inspect , then go to console and refresh page so that it start loading from start :) ");
-    let nTimes = prompt("how many times u want to play game of rock-paper-scissors");
-    return playGame(nTimes);
-}
-promptUser();
+playGame();
