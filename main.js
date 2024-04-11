@@ -36,7 +36,13 @@ function playRound(playerSelection, computerSelection) {
 
 function finalResult(){
     alert("ready for final result");
-    result.textContent = (`You won ${playerScore} times, you loose ${computerScore} times, and total tie games are ${tie}`);
+    
+    if(playerScore > computerScore) {
+        result.textContent = (`YOU WON THE MATCH,You won ${playerScore} times, you loose ${computerScore} times, and total tie games are ${tie}`);
+    }
+    else {
+        result.textContent = (`YOU LOOSE!!!! THE MATCH,You won ${playerScore} times, you loose ${computerScore} times, and total tie games are ${tie}`);
+    }
 }
 
 function playGame() {
